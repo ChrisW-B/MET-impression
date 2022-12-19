@@ -1,7 +1,7 @@
 import requests
 import random
 from inky.inky_uc8159 import Inky
-from PIL import Image, Resampling
+from PIL import Image
 import hitherdither
 import time
 
@@ -26,7 +26,9 @@ def image_fits(img):
     width, height = img.size
     if width < height:
         return False
-    return width/height > 1.25 and width/height < 1.4
+    if width < 600 or height < 448:
+        return False
+    return width / height > 1.25 and width / height < 1.4
 
 
 def query_object(object_id):
@@ -52,6 +54,7 @@ def get_random_art():
         im = Image.open(requests.get(
             selected_object['primaryImage'], stream=True).raw).convert("RGB")
         time.sleep(1)
+    print(selected_object['primaryImage'])
     return im
 
 
@@ -61,7 +64,7 @@ def draw_art(art):
     bg = Image.new("RGBA", (inky.WIDTH, inky.HEIGHT), (255, 255, 255, 255))
     bg_w, bg_h = bg.size
 
-    art.thumbnail((inky.HEIGHT, inky.HEIGHT), Resampling.LANCZOS)
+    art.thumbnail((inky.HEIGHT, inky.HEIGHT), Image.Resampling.LANCZOS)
     art_dithered = hitherdither.ordered.bayer.bayer_dithering(
         art, palette, thresholds, order=2)
 
