@@ -10,7 +10,7 @@ saturation = 0.5
 thresholds = [64, 64, 64]
 gutter_size = 5
 
-departments = ['9', '11', '19', '21']
+departments = ['9', '11', '21']
 objects_query = 'https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds' + \
     '|'.join(departments)
 
@@ -26,7 +26,7 @@ def image_fits(img):
     width, height = img.size
     if width < height:
         return False
-    if width < 600 or height < 448:
+    if width < Inky.WIDTH or height < Inky.HEIGHT:
         return False
     return width / height > 1.25 and width / height < 1.4
 
@@ -54,7 +54,9 @@ def get_random_art():
         im = Image.open(requests.get(
             selected_object['primaryImage'], stream=True).raw).convert("RGB")
         time.sleep(1)
-    print(selected_object['primaryImage'])
+    print(selected_object['objectURL'])
+    print(selected_object['department'])
+    print(selected_object['title'])
     return im
 
 
@@ -62,7 +64,7 @@ def draw_art(art):
     bg = Image.new("RGBA", (inky.WIDTH, inky.HEIGHT), (255, 255, 255, 255))
     bg_w, bg_h = bg.size
 
-    art.thumbnail((inky.HEIGHT, inky.HEIGHT), Image.Resampling.LANCZOS)
+    art.thumbnail((inky.WIDTH, inky.HEIGHT), Image.Resampling.LANCZOS)
     art_dithered = hitherdither.ordered.bayer.bayer_dithering(
         art, palette, thresholds, order=2)
     art_w, art_h = art_dithered.size
