@@ -52,7 +52,7 @@ def get_random_art():
         im = Image.open(requests.get(
             selected_object['primaryImage'], stream=True).raw).convert("RGB")
         time.sleep(1)
-   return im
+    return im
 
 
 def draw_art(art):
@@ -60,7 +60,8 @@ def draw_art(art):
     draw = ImageDraw.Draw(bg)
 
     art.thumbnail((inky.HEIGHT, inky.HEIGHT), Image.ANTIALIAS)
-    art_dithered = hitherdither.ordered.bayer.bayer_dithering(art, palette, thresholds, order=2)
+    art_dithered = hitherdither.ordered.bayer.bayer_dithering(
+        art, palette, thresholds, order=2)
     bg.paste(art_dithered, (0, 0))
 
     inky.set_image(bg)
@@ -70,6 +71,7 @@ def draw_art(art):
 def main():
     art = get_random_art()
     draw_art(art)
+
 
 if __name__ == '__main__':
     main()
