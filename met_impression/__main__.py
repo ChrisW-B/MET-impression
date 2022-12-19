@@ -59,14 +59,13 @@ def get_random_art():
 
 
 def draw_art(art):
-    art_w, art_h = art.size
-
     bg = Image.new("RGBA", (inky.WIDTH, inky.HEIGHT), (255, 255, 255, 255))
     bg_w, bg_h = bg.size
 
     art.thumbnail((inky.HEIGHT, inky.HEIGHT), Image.Resampling.LANCZOS)
     art_dithered = hitherdither.ordered.bayer.bayer_dithering(
         art, palette, thresholds, order=2)
+    art_w, art_h = art_dithered.size
 
     offset = ((bg_w - art_w) // 2, (bg_h - art_h) // 2)
     bg.paste(art_dithered, offset)
