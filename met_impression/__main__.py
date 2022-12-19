@@ -10,7 +10,7 @@ saturation = 0.5
 thresholds = [64, 64, 64]
 gutter_size = 5
 
-departments = ['9', '12', '21']
+departments = ['9', '11', '19', '21']
 objects_query = 'https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds' + \
     '|'.join(departments)
 
