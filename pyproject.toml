@@ -12,7 +12,9 @@ start = "met_impression.__main__:main"
 [tool.poetry.dependencies]
 python = "^3.7"
 requests = "^2.28.1"
-
+inky = {extras = ["rpi", "example-depends"], version = "^1.4.0"}
+hitherdither = {git = "https://www.github.com/hbldh/hitherdither"}
+Pillow = "^9.3.0"
 
 [build-system]
 requires = ["poetry-core"]
