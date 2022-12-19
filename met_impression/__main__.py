@@ -3,6 +3,7 @@ import random
 from inky.inky_uc8159 import Inky
 from PIL import Image, ImageDraw
 import hitherdither
+import time
 
 inky = Inky()
 saturation = 0.5
@@ -14,7 +15,6 @@ objects_query = 'https://collectionapi.metmuseum.org/public/collection/v1/object
     '|'.join(departments)
 
 object_query = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/'
-
 
 palette = hitherdither.palette.Palette(
     inky._palette_blend(saturation, dtype='uint24'))
@@ -50,14 +50,26 @@ def get_random_art():
         if not selected_object['primaryImage']:
             continue
         im = Image.open(requests.get(
-            selected_object['primaryImage'], stream=True).raw)
-    return selected_object['primaryImage']
+            selected_object['primaryImage'], stream=True).raw).convert("RGB")
+        time.sleep(1)
+   return im
+
+
+def draw_art(art):
+    bg = Image.new("RGBA", (inky.WIDTH, inky.HEIGHT), (255, 255, 255, 255))
+    draw = ImageDraw.Draw(bg)
+
+    art.thumbnail((inky.HEIGHT, inky.HEIGHT), Image.ANTIALIAS)
+    art_dithered = hitherdither.ordered.bayer.bayer_dithering(art, palette, thresholds, order=2)
+    bg.paste(art_dithered, (0, 0))
+
+    inky.set_image(bg)
+    inky.show()
 
 
 def main():
     art = get_random_art()
-    print(art)
-
+    draw_art(art)
 
 if __name__ == '__main__':
     main()
