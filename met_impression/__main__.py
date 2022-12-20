@@ -95,6 +95,10 @@ def draw_spotify(bg, title, artist, album_name, album_art_url):
         img, palette, thresholds, order=2)
     bg.paste(image_dithered, (0, bg_h - 75))
 
+    draw.text((80, bg_h - 75), title, 'Black', body_font)
+    draw.text((80, bg_h - 55), album_name, 'Black', body_font)
+    draw.text((80, bg_h - 35), artist, 'Black', body_font)
+
 
 def main():
     bg = Image.new("RGBA", (inky.WIDTH, inky.HEIGHT), (255, 255, 255, 255))
