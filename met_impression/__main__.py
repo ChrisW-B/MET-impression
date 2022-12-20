@@ -75,28 +75,37 @@ def draw_art(bg, art):
     bg.paste(art_dithered, offset)
 
 
+def get_now_playing():
+    scope = 'user-read-currently-playing user-top-read'
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+        scope=scope, open_browser=False))
+    return sp.current_user_playing_track()
+
+
 def draw_spotify(bg, title, artist, album_name, album_art_url):
+    bg_w, bg_h = bg.size
+
     draw = ImageDraw.Draw(bg)
+    draw.rectangle(
+        [(0, bg_h), (bg_w, bg_h - 75)], fill='White')
     img = Image.open(requests.get(
         album_art_url, stream=True).raw).convert("RGB")
     img.thumbnail((75, 75), Image.Resampling.LANCZOS)
     image_dithered = hitherdither.ordered.bayer.bayer_dithering(
         img, palette, thresholds, order=2)
-    bg.paste(image_dithered, (0, inky.HEIGHT - 75))
+    bg.paste(image_dithered, (0, bg_h - 75))
+
 
 def main():
-    scope = 'user-read-currently-playing user-top-read'
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope, open_browser=False))
-    now_playing = sp.current_user_playing_track()
-
     bg = Image.new("RGBA", (inky.WIDTH, inky.HEIGHT), (255, 255, 255, 255))
 
     art = get_random_art()
     draw_art(bg, art)
 
+    now_playing = get_now_playing()
     if now_playing and now_playing['is_playing']:
         draw_spotify(
-            bg
+            bg=bg,
             title=now_playing['item']['name'],
             artist=now_playing['item']['artists'][0]['name'],
             album_name=now_playing['item']['album']['name'],
