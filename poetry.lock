@@ -1,4 +1,15 @@
 [[package]]
+name = "async-timeout"
+version = "4.0.2"
+description = "Timeout context manager for asyncio programs"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+typing-extensions = {version = ">=3.6.5", markers = "python_version < \"3.8\""}
+
+[[package]]
 name = "beautifulsoup4"
 version = "4.11.1"
 description = "Screen-scraping library"
@@ -217,6 +228,23 @@ python-versions = "*"
 decorator = "*"
 
 [[package]]
+name = "redis"
+version = "4.4.0"
+description = "Python client for Redis database and key-value store"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+async-timeout = ">=4.0.2"
+importlib-metadata = {version = ">=1.0", markers = "python_version < \"3.8\""}
+typing-extensions = {version = "*", markers = "python_version < \"3.8\""}
+
+[package.extras]
+hiredis = ["hiredis (>=1.0.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
+
+[[package]]
 name = "requests"
 version = "2.28.1"
 description = "Python HTTP for Humans."
@@ -280,6 +308,24 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "spotipy"
+version = "2.22.0"
+description = "A light weight Python library for the Spotify Web API"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+redis = ">=3.5.3"
+requests = ">=2.25.0"
+six = ">=1.15.0"
+urllib3 = ">=1.26.0"
+
+[package.extras]
+doc = ["Sphinx (>=1.5.2)"]
+test = ["mock (==2.0.0)"]
+
+[[package]]
 name = "typing-extensions"
 version = "4.4.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -315,9 +361,10 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "c271ccb533ad82cf1898e8a7de306bbbc79b1d235878b1698808b6dc2a2a58b2"
+content-hash = "c60eae10fde2d8c7639222237bb648ac455b3f0f4f2b7203d31e4b7176dd6a5a"
 
 [metadata.files]
+async-timeout = []
 beautifulsoup4 = []
 certifi = []
 charset-normalizer = []
@@ -337,12 +384,14 @@ inky = []
 numpy = []
 pillow = []
 ratelim = []
+redis = []
 requests = []
 "rpi.gpio" = []
 six = []
 smbus2 = []
 soupsieve = []
 spidev = []
+spotipy = []
 typing-extensions = []
 urllib3 = []
 zipp = []
